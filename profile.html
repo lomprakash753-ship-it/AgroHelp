@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family:sans-serif;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.container{
+  width:90%;
+  max-width:400px;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+}
+
+h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+p{
+  margin:8px 0;
+  padding:8px;
+  background:rgba(255,255,255,0.1);
+  border-radius:10px;
+}
+
+input{
+  width:100%;
+  padding:8px;
+  margin:6px 0;
+  border-radius:10px;
+  border:none;
+  color: rgb(8, 7, 7);
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>User Profile 👤</h2>
+<p>your Name</p>
+<input id="Fullname" placeholder="Name" >
+<p>your Address</p>
+<input id="Address" placeholder="Address" >
+<p>your Age</p>
+<input id="Age" placeholder="Age" >
+<p>your Gender</p>
+<input id="Gender" placeholder="Gender" >
+<p>your Contact</p>
+<input id="Contact" placeholder="Contact" >
+<p>your Pincode</p>
+<input id="Pincode" placeholder="Pincode" >
+<p>your Role</p>
+<input id="Role" placeholder="Role" >
+<p>your District</p>
+<input id="District" placeholder="District">
+
+<button onclick="enableEdit()">Edit</button>
+<button onclick="saveProfile()">Save</button>
+
+<button onclick="logout()">Logout</button>
+<button onclick="deleteAccount()">Delete Account</button>
+
+<button onclick="goBack()">⬅ Back</button>
+
+</div>
+
+<script>
+
+// Load user data
+let originalUser = JSON.parse(localStorage.getItem("users"));
+
+window.onload = function(){
+  if(originalUser){
+    document.getElementById("Fullname").value = originalUser.Fullname || "";
+    document.getElementById("Address").value = originalUser.Address || "";
+    document.getElementById("Age").value = originalUser.Age || "";
+    document.getElementById("Gender").value = originalUser.Gender || "";
+    document.getElementById("Contact").value = originalUser.Contact || "";
+    document.getElementById("Pincode").value = originalUser.Pincode || "";
+    document.getElementById("Role").value = originalUser.Role || "";
+    document.getElementById("District").value = originalUser.District || "";
+  }
+}
+
+// Enable editing
+function enableEdit(){
+  document.querySelectorAll("input").forEach(input=>{
+    input.disabled = false;
+  });
+}
+
+// Save profile
+function saveProfile(){
+  const updatedUser = {
+    Fullname: document.getElementById("Fullname").value,
+    Address: document.getElementById("Address").value,
+    Age: document.getElementById("Age").value,
+    Gender: document.getElementById("Gender").value,
+    Contact: document.getElementById("Contact").value,
+    Pincode: document.getElementById("Pincode").value,
+    Role: document.getElementById("Role").value,
+    District: document.getElementById("District").value,
+    //oldContact: originalUser?.Contact
+  };
+
+  // Save in localStorage
+  localStorage.setItem("user", JSON.stringify(updatedUser));
+
+  // Send to backend
+  fetch("http://localhost:5000/updateUser", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(updatedUser)
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert("Profile Updated ✅");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Error saving data ❌");
+  });
+}
+
+// Logout
+function logout(){
+  localStorage.removeItem("user");
+  window.location.href = "newlogin.html";
+}
+
+// Delete Account
+function deleteAccount(){
+  if(confirm("Are you sure?")){
+    localStorage.removeItem("user");
+    alert("Account Deleted ❌");
+    window.location.href = "newlogin.html";
+  }
+}
+
+// Back button
+function goBack(){
+  window.location.href='agrohelp.html';
+}
+
+
+
+function deleteAccount(){
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  fetch("http://localhost:5000/deleteUser", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      Contact: user.Contact
+    })
+  })
+
+  .then(res => res.text())
+
+  .then(msg => {
+
+    alert(msg);
+
+    localStorage.removeItem("user");
+    window.location.href = "newlogin.html";
+
+  })
+
+  .catch(err => {
+
+    console.error(err);
+    alert("Error deleting account ❌");
+
+  });
+}
+
+</script>
+</script>
+
+</body>
+</html>

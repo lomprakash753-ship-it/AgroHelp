@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worker Details</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  padding:20px;
+  color:white;
+
+  background:
+  radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+  radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+  #0f172a;
+}
+
+.top-bar{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  margin-bottom:15px;
+  display:flex;
+  justify-content:flex-start;
+}
+
+.back-btn{
+  display:inline-block;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(10px);
+  padding:12px 20px;
+  border-radius:15px;
+  cursor:pointer;
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  border:1px solid rgba(255,255,255,0.2);
+  z-index:1000;
+}
+.back-btn:hover{
+  background:rgba(255,255,255,0.2);
+}
+
+.container{
+  max-width:500px;
+  margin:auto;
+}
+
+.card{
+  background:rgba(255,255,255,0.08);
+  border-radius:25px;
+  padding:25px;
+  backdrop-filter:blur(12px);
+  text-align:center;
+}
+
+.profile{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  margin:auto;
+  margin-bottom:15px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:45px;
+  font-weight:bold;
+  color:black;
+}
+
+h2{
+  margin-bottom:10px;
+}
+
+p{
+  margin:10px 0;
+  color:#d1d5db;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:15px;
+  margin-top:10px;
+  color:white;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.call-btn{
+  background:#16a34a;
+}
+
+.map-btn{
+  background:#2563eb;
+}
+
+.price-box{
+  margin-top:15px;
+  padding:12px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.1);
+  font-size:20px;
+  font-weight:bold;
+  color:#00f5a0;
+}
+
+.edit-box{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  color:white;
+  outline:none;
+}
+
+.edit-box::placeholder{
+  color:#cbd5e1;
+}
+
+.update-btn{
+  background:#f59e0b;
+  color:black;
+  font-weight:bold;
+}
+
+.hire-btn{
+  background:#22c55e;
+  color:white;
+  font-weight:bold;
+}
+
+.hired-btn{
+  background:#ef4444;
+  color:white;
+}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+  <div class="card" id="workerCard"></div>
+</div>
+
+<script>
+
+let worker = JSON.parse(localStorage.getItem("selectedWorker"));
+
+if(worker){
+
+document.getElementById("workerCard").innerHTML = `
+
+<div class="top-bar">
+  <div class="back-btn" onclick="window.location.href='labourlist.html'">
+    ← Back
+  </div>
+</div>
+
+
+
+<div class="profile">
+${worker.Fullname.charAt(0).toUpperCase()}
+</div>
+
+<h2>${worker.Fullname}</h2>
+
+<p>📍 ${worker.Address || "No Location"}</p>
+
+<p>📞 ${worker.Contact}</p>
+
+<p>🧑 Role: ${worker.Role}</p>
+
+<p>🛠️ Skills</p>
+
+<input
+type="text"
+id="skills"
+class="edit-box"
+value="${worker.skills || ''}"
+placeholder="Enter skills"
+/>
+
+<p>💰 Salary Per Day</p>
+
+<input
+type="number"
+id="salary"
+class="edit-box"
+value="${worker.price || 500}"
+placeholder="Enter Salary"
+/>
+
+<button class="update-btn"
+onclick="updateWorker()">
+✏️ Update Details
+</button>
+
+<div class="price-box">
+₹ <span id="salaryText">
+${worker.price || 500}
+</span>/day
+</div>
+
+<button class="map-btn"
+onclick="openMap('${worker.Address}')">
+📍 View Location
+</button>
+
+<button class="call-btn"
+onclick="callWorker('${worker.Contact}')">
+📞 Call Worker
+</button>
+
+<button
+id="hireBtn"
+class="${worker.hired ? 'hired-btn' : 'hire-btn'}"
+onclick="hireWorker()">
+
+${worker.hired ? '❌ Remove Hire' : '✅ Hire Worker'}
+
+</button>
+`;
+}
+function callWorker(number){
+  window.location.href = "tel:"+number;
+}
+
+function openMap(address){
+  window.open(
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`,
+  "_blank"
+  );
+}
+
+function updateWorker(){
+
+  const updatedSkills =
+  document.getElementById("skills").value;
+
+  const updatedSalary =
+  document.getElementById("salary").value;
+
+  worker.skills = updatedSkills;
+  worker.price = updatedSalary;
+
+  // localStorage update
+  localStorage.setItem(
+    "selectedWorker",
+    JSON.stringify(worker)
+  );
+
+  // salary live update
+  document.getElementById(
+    "salaryText"
+  ).innerText = updatedSalary;
+
+  // backend update
+  fetch(
+    "http://localhost:3000/update/" + worker.id,
+    {
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        skills:updatedSkills,
+        price:updatedSalary
+      })
+    }
+  )
+  .then(res=>res.text())
+  .then(msg=>{
+    //alert("Updated Successfully");
+  });
+
+}
+
+function hireWorker(){
+
+  worker.hired = !worker.hired;
+
+  localStorage.setItem(
+    "selectedWorker",
+    JSON.stringify(worker)
+  );
+
+  const btn =
+  document.getElementById("hireBtn");
+
+  if(worker.hired){
+
+    btn.innerText =
+    "❌ Remove Hire";
+
+    btn.className =
+    "hired-btn";
+
+    alert(
+      worker.Fullname +
+      " hired successfully!"
+    );
+
+  }else{
+
+    btn.innerText =
+    "✅ Hire Worker";
+
+    btn.className =
+    "hire-btn";
+
+    alert(
+      worker.Fullname +
+      " removed from hire."
+    );
+  }
+
+  // backend update
+  fetch(
+    "http://localhost:3000/update/" + worker.id,
+    {
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        hired:worker.hired
+      })
+    }
+  );
+
+}
+
+</script>
+
+</body>
+</html>

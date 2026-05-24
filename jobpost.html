@@ -1,0 +1,446 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jobs</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              #0f172a;
+  color:white;
+}
+
+.container{
+  width:100%;
+  max-width:400px;
+  padding:20px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+  border-radius:25px;
+  box-shadow:0 0 30px rgba(0,255,200,0.2);
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.05);
+}
+
+.left{
+  display:flex;
+  gap:5px;
+  font-weight:bold;
+}
+
+.logo-text{
+  color:#00f5a0;
+}
+
+.right{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* TOGGLE */
+.lang-toggle{
+  width:60px;
+  height:28px;
+  position:relative;
+  background:rgba(255,255,255,0.1);
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.circle{
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  font-size:12px;
+  transition:0.3s;
+}
+
+/* ADD BUTTON */
+.add-btn{
+  background: linear-gradient(135deg, #1a7482, #2494a5);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* BACK */
+.back{
+  margin-top:10px;
+  color:#ccc;
+  cursor:pointer;
+}
+
+/* TITLE */
+h2{
+  margin-top:10px;
+}
+
+#sub{
+  color:#aaa;
+  font-size:13px;
+}
+
+/* SEARCH */
+.filters{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+}
+
+.filters input,
+.filters select{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:15px;
+  background:rgba(255,255,255,0.08);
+  color:rgb(57, 50, 50);
+}
+
+/* CARD */
+.card{
+  margin-top:15px;
+  padding:15px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.08);
+}
+
+.delete-btn{
+  margin-top:10px;
+  border:none;
+  padding:6px 10px;
+  border-radius:10px;
+  background:red;
+  color:white;
+  cursor:pointer;
+}
+
+.apply-btn{
+  margin-top:10px;
+  border:none;
+  padding:6px 10px;
+  border-radius:10px;
+  background:rgb(29, 63, 40);
+  color:white;
+  cursor:pointer;
+}
+
+.status-btn{
+  margin-top:10px;
+  padding:6px 10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.open{
+  background:orange;
+}
+
+.process{
+  background:blue;
+}
+
+.complete{
+  background:green;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="left">
+      🌿 <span class="logo-text" id="name">AgroHelp</span>
+    </div>
+
+    <div class="right">
+      <div class="lang-toggle" onclick="toggleLang()">
+        <div id="circle" class="circle">EN</div>
+      </div>
+
+      <button class="add-btn" id="postBtn" onclick="openForm()">+ Job Post</button>
+    </div>
+  </div>
+
+  <!-- BACK -->
+  <div class="back" onclick="goBack()" id="backBtn">← Back</div>
+
+  <!-- TITLE -->
+  <h2 id="title">Jobs</h2>
+  <p id="sub"></p>
+
+  <!-- FILTER -->
+  <div class="filters">
+    <input type="text" id="search" placeholder="Search...">
+    <select id="filter">
+      <option value="all">All</option>
+      <option class="open"  value="open">open</option>
+      <option class="Process" value="Process">In Process</option>
+      <option class="Complete" value="Complete">Complete</option>
+    </select>
+    
+  </div>
+
+  <!-- JOB LIST -->
+  <div id="jobList"></div>
+
+</div>
+
+<script>
+
+// 🌐 LANGUAGE
+let currentLang = "en";
+
+const text = {
+  en:{
+    title:"Jobs",
+    back:"← Back",
+    postBtn:"+ Job Post",
+    search:"Search...",
+    all:"All",
+    open:"Open",
+      Pending:"Pending",   
+    Process:"In Process",
+    Complete:"Complete",
+    delete:"Delete",
+    apply:"Apply",
+    name:"AgroHelp"
+  },
+  hi:{
+    title:"नौकरी सूची",
+    back:"← पीछे",
+    postBtn:"+ नौकरी डालें",
+    search:"खोजें...",
+    all:"सभी",
+    open:" उपलब्ध",
+      Pending:"लंबित",   
+    Process:"प्रक्रिया में",
+    Complete: "पूर्ण",
+    delete:"हटाएं",
+    apply:"आवेदन करें",  
+    name:"एग्रोहेल्प"
+  }
+};
+
+// 🔁 TOGGLE
+function toggleLang(){
+  currentLang = currentLang === "en" ? "hi" : "en";
+  applyLang();
+}
+
+// 🔄 APPLY
+function applyLang(){
+
+  const circle = document.getElementById("circle");
+
+  // 👉 MOVE TOGGLE
+  if(currentLang === "en"){
+    circle.innerText = "EN";
+    circle.style.transform = "translateX(0)";
+  }else{
+    circle.innerText = "हिं";
+    circle.style.transform = "translateX(30px)";
+  }
+
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+  document.getElementById("title").innerText = text[currentLang].title;
+  document.getElementById("backBtn").innerText = text[currentLang].back;
+  document.getElementById("postBtn").innerText = text[currentLang].postBtn;
+  document.getElementById("search").placeholder = text[currentLang].search;
+  document.getElementById("name").innerText = text[currentLang].name;
+
+  document.getElementById("filter").innerHTML = `
+    <option value="all">${text[currentLang].all}</option>
+    <option value="open">${text[currentLang].open}</option>
+    <option value="Process">${text[currentLang].Process}</option>
+    <option value="Complete">${text[currentLang].Complete}</option>
+  `;
+
+  document.getElementById("sub").innerText =
+    jobs.length + (currentLang === "en" ? " Jobs Available" : " नौकरियां उपलब्ध");
+
+  displayJobs();
+}
+
+// BACK
+function goBack(){
+  window.location.href="agrohelp.html";
+}
+
+// OPEN FORM
+function openForm(){
+  window.location.href = "jobposting.html";
+}
+
+// DISPLAY JOBS
+function displayJobs(){
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+  let container = document.getElementById("jobList");
+  let search = document.getElementById("search").value.toLowerCase();
+  let filter = document.getElementById("filter").value;
+//let selectedFarmer = localStorage.getItem("selectedFarmer"); // 👈 get farmer
+
+
+
+  
+  container.innerHTML = "";
+
+  jobs.forEach((job,index)=>{
+
+
+      if(!job.status){
+      job.status = "open";
+      }
+
+      //if(selectedFarmer && job.farmerName !== selectedFarmer){
+    //return;
+     // }
+    let match = job.title.toLowerCase().includes(search) ||
+                job.location.toLowerCase().includes(search)||
+                job.status.toLowerCase().includes(search);
+
+    if(!match) return;
+
+    // 👉 FILTER STATUS
+    if(filter !== "all" && job.status !== filter) return;
+
+
+    container.innerHTML += `
+      <div class="card">
+        <h3>${job.title}</h3>
+        <p>👤 ${job.person}</p>
+        <p>📍 ${job.location}</p>
+        <p>₹ ${job.salary}/day</p>
+
+        <!-- STATUS BUTTON -->
+        <button class="status-btn ${job.status.toLowerCase()}" onclick="changeStatus(${index})">
+          ${job.status}
+        </button>
+
+
+<button class="apply-btn"
+onclick="applyprocess(${index})"
+${job.status === "Pending" ? "disabled" : ""}>
+
+${job.status === "Pending"
+ ? "Pending ⏳"
+ : text[currentLang].apply}
+
+</button>
+
+
+        <button class="delete-btn" onclick="deleteJob(${index})">
+          ${text[currentLang].delete}
+        </button>
+      </div>
+    `;
+  });
+}
+
+// DELETE
+function deleteJob(index){
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+  jobs.splice(index,1);
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+  displayJobs();
+}
+
+function changeStatus(index){
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+  if(jobs[index].status === "open"){
+    jobs[index].status = "Process"; // In Process
+  }else if(jobs[index].status === "Process"){
+    jobs[index].status = "Complete";
+  }else{
+    jobs[index].status = "open";
+  }
+
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+  displayJobs();
+}
+function applyprocess(index){
+
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+    jobs[index].status = "Pending";
+
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+
+  displayJobs();
+}
+// EVENTS
+document.getElementById("search").addEventListener("input", displayJobs);
+document.getElementById("filter").addEventListener("change", displayJobs);
+
+
+window.onload = function(){
+
+  // Work Type auto select
+  let savedWork = localStorage.getItem("selectedWork");
+  if(savedWork){
+      document.getElementById("work").value = savedWork;
+  }
+
+  // Workers auto fill
+  let savedWorkers = localStorage.getItem("selectedWorkers");
+  if(savedWorkers){
+      document.getElementById("workers").value = savedWorkers;
+  }
+
+  // Wage auto fill
+  let savedWage = localStorage.getItem("selectedWage");
+  if(savedWage){
+      document.getElementById("desc").value =
+      "Salary: ₹" + savedWage + " per day";
+  }
+}
+// LOAD
+applyLang();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase OTP Test</title>
+</head>
+<body>
+
+<h2>OTP Verification</h2>
+
+<input type="text" id="phone" placeholder="+919999999999">
+<button onclick="sendOTP()">Send OTP</button>
+
+<br><br>
+
+<div id="recaptcha-container"></div>
+
+<input type="text" id="otp" placeholder="Enter OTP">
+<button onclick="verifyOTP()">Verify OTP</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCWSs-oy4QY_mCG89L0xIAFz6yHXXWwWrw",
+  authDomain: "otp-hub-6bfbb.firebaseapp.com",
+  projectId: "otp-hub-6bfbb",
+  storageBucket: "otp-hub-6bfbb.firebasestorage.app",
+  messagingSenderId: "884534936554",
+  appId: "1:884534936554:web:258245cd1274b988d56893",
+  measurementId: "G-M422DRFQFT"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+window.recaptchaVerifier =
+new RecaptchaVerifier(
+  auth,
+  'recaptcha-container',
+  {
+    size: 'normal'
+  }
+);
+
+window.sendOTP = async function () {
+
+  const phone =
+  document.getElementById('phone').value;
+
+  const appVerifier =
+  window.recaptchaVerifier;
+
+  window.confirmationResult =
+  await signInWithPhoneNumber(
+    auth,
+    phone,
+    appVerifier
+  );
+
+  alert("OTP Sent");
+}
+
+window.verifyOTP = async function () {
+
+  const code =
+  document.getElementById('otp').value;
+
+  await window.confirmationResult.confirm(code);
+
+  alert("Login Success");
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+109798992815

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post a Job</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              #0f172a;
+  color:white;
+  padding: 20px;
+}
+
+.container{
+  width:100%;
+  max-width:500px;
+  padding:30px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+  border-radius:25px;
+}
+
+h2 { margin-bottom: 5px; }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background:rgba(255,255,255,0.08);
+    color:rgb(33, 30, 30);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.row > div {
+    flex: 1;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    background:linear-gradient(135deg,#1a7482,#2494a5);
+    color:white;
+    font-size: 1em;
+    cursor:pointer;
+}
+
+.back{
+  color:#ccc;
+  cursor:pointer;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="back" onclick="window.history.back()">← Back</div>
+  <h2>Post a Job</h2>
+  <p style="color:#ccc; margin-bottom: 20px;">Request labourers for agricultural work</p>
+
+  <form id="jobForm">
+
+    <div class="form-group">
+      <label>Farmer Name</label>
+      <input type="text" id="name" required>
+    </div>
+
+    <div class="form-group">
+        <label>Work Type</label>
+        <select id="work" required>
+            <option value="">Select work type</option>
+            <option>Harvesting</option>
+            <option>Weeding</option>
+            <option>Ploughing</option>
+            <option>Sowing</option>
+            <option>Transplanting</option>
+            <option>Irrigation</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        
+        
+          <input type="number" id="salary" placeholder="Enter salary per day">
+          
+        
+    </div>
+
+
+
+    <div class="form-group">
+        <label>Village</label>
+        <input type="text" id="village" required>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <label>Work Date</label>
+            <input type="date" id="date" required>
+        </div>
+
+        <div class="form-group">
+            <label>Labourers Needed</label>
+            <input type="number" id="workers" value="1" min="1">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <textarea id="desc"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Post Job</button>
+  </form>
+</div>
+
+<script>
+document.getElementById("jobForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  let job = {
+    person: document.getElementById("name").value,
+    title: document.getElementById("work").value,
+    
+
+    village: document.getElementById("village").value,
+    date: document.getElementById("date").value,
+    workers: document.getElementById("workers").value,
+    description: document.getElementById("desc").value,
+    location: document.getElementById("village").value,
+    salary: document.getElementById("salary").value,
+    status: "Open"
+  };
+
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+  jobs.push(job);
+
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+
+  alert("Job Posted Successfully ✅");
+
+  window.location.href = "worksuccess.html";
+});
+
+applylang();
+</script>
+
+</body>
+</html>

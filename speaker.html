@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bhopal Mandi Bhav</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#063b3b,#0c5b63,#123f6b);
+    min-height:100vh;
+    padding:20px;
+    color:white;
+}
+
+.heading{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.heading h1{
+    font-size:50px;
+}
+
+.heading p{
+    color:#ddd;
+    margin-top:10px;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:rgba(255,255,255,0.08);
+    padding:25px;
+    border-radius:20px;
+    backdrop-filter:blur(10px);
+}
+
+.card h2{
+    font-size:32px;
+    margin-bottom:15px;
+}
+
+.card p{
+    margin:8px 0;
+    font-size:20px;
+}
+
+.price{
+    color:#00ff95;
+    font-weight:bold;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    color:white;
+}
+
+.view-btn{
+    background:#00c853;
+}
+
+.detail-btn{
+    background:#2962ff;
+}
+
+.sound-btn{
+    background:#ff9800;
+}
+
+</style>
+</head>
+<body>
+
+<div class="heading">
+
+    <h1>🌾 Bhopal Mandi Bhav</h1>
+
+    <p>Click sound button to hear crop name and price</p>
+
+</div>
+
+<div class="container" id="mandiContainer"></div>
+
+<script>
+
+const mandiData = [
+
+{
+    crop:"गेहूं",
+    price:"2268 से 2460 रुपये"
+},
+
+{
+    crop:"चना",
+    price:"3811 से 5330 रुपये"
+},
+
+{
+    crop:"तुअर",
+    price:"6200 से 6980 रुपये"
+},
+
+{
+    crop:"मसूर",
+    price:"5805 रुपये"
+},
+
+{
+    crop:"सरसों",
+    price:"5000 से 5900 रुपये"
+},
+
+{
+    crop:"सोयाबीन",
+    price:"3900 से 4700 रुपये"
+}
+
+];
+
+const container = document.getElementById("mandiContainer");
+
+mandiData.forEach(item => {
+
+container.innerHTML += `
+
+<div class="card">
+
+    <h2>🌾 ${item.crop}</h2>
+
+    <p>
+    <b>City :</b> Bhopal
+    </p>
+
+    <p>
+    <b>Mandi Rate :</b> 
+    <span class="price">${item.price}</span>
+    </p>
+
+    <div class="buttons">
+
+        <button class="btn view-btn">
+            View
+        </button>
+
+        <button class="btn detail-btn">
+            Details
+        </button>
+
+        <button class="btn sound-btn"
+        onclick="playSound('${item.crop}','${item.price}')">
+
+            🔊 Sound
+
+        </button>
+
+    </div>
+
+</div>
+
+`;
+
+});
+
+function playSound(crop, price){
+
+    let speech = new SpeechSynthesisUtterance();
+
+    speech.text =
+    crop + " का मंडी भाव " + price;
+
+    speech.lang = "hi-IN";
+
+    speech.volume = 1;
+
+    speech.rate = 1;
+
+    speech.pitch = 1;
+
+    window.speechSynthesis.speak(speech);
+
+}
+
+</script>
+
+</body>
+</html>

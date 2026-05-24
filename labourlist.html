@@ -1,0 +1,383 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Labourers</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  padding:20px;
+  color:white;
+
+  background:
+  radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+  radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+  #0f172a;
+}
+
+/* TOP BAR */
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+#backBtn{
+  background:rgba(255,255,255,0.1);
+  padding:8px 14px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+/* TOGGLE */
+.lang-toggle{
+  width:70px;
+  height:35px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.1);
+  padding:4px;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.circle{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  color:black;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+/* TITLE */
+h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+/* SEARCH */
+.search{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:20px;
+  margin-bottom:20px;
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+.search::placeholder{
+  color:#9ca3af;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+/* CARD */
+.card{
+  background:rgba(255,255,255,0.08);
+  padding:15px;
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+}
+
+/* TEXT */
+.card h3{
+  margin-bottom:10px;
+}
+
+.card p{
+  margin-bottom:6px;
+  color:#d1d5db;
+}
+
+/* STATUS */
+.available{
+  background:#00c27a;
+}
+
+.busy{
+  background:red;
+}
+
+/* BUTTONS */
+button{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  color:white;
+  font-size:14px;
+  
+}
+
+/* MAP BUTTON */
+.map-btn{
+  background:#2563eb;
+}
+
+/* CALL BUTTON */
+.call-btn{
+  background:#16a34a;
+}
+
+/* REMOVE BUTTON */
+button:last-child{
+  background:#E44326;
+}
+
+/* STATUS BUTTON */
+#statusbtn{
+  background:#00f5a0;
+  color:black;
+}
+
+/* MAP */
+#mapContainer{
+  margin-top:30px;
+}
+
+#map iframe{
+  border-radius:20px;
+}
+
+#btn{
+  width: 50px;
+}
+
+.work-btn{
+  background:#f59e0b;
+  color:black;
+  margin-top:8px;
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div id="backBtn" onclick="window.location.href='agrohelp.html'">← पीछे</div>
+
+  <div class="lang-toggle" onclick="toggleLanguage()">
+    <div id="toggleCircle" class="circle">EN</div>
+  </div>
+</div>
+
+<h2>Labourers</h2>
+
+<input type="text" class="search" placeholder="Search...">
+
+<div class="grid" id="labourList"></div>
+
+<div id="mapContainer">
+  <div id="map"></div>
+</div>
+<script>
+
+// 🌐 LANGUAGE
+let currentLang = "en";
+
+const langData = {
+  en:{
+    title:"Labourers",
+    search:"Search...",
+    location:"Location",
+    call:"Call",
+    remove:"Remove",
+    noLocation:"No location",
+    available:"Available",
+    busy:"Busy",
+    back:"← Back"
+  },
+  hi:{
+    title:"मजदूर",
+    search:"खोजें...",
+    location:"स्थान",
+    call:"कॉल",
+    remove:"हटाएं",
+    noLocation:"कोई लोकेशन नहीं",
+    available:"उपलब्ध",
+    busy:"व्यस्त",
+    back:"← पीछे"
+  }
+};
+
+// 🔁 TOGGLE
+function toggleLanguage(){
+  currentLang = currentLang === "en" ? "hi" : "en";
+
+  const circle = document.getElementById("toggleCircle");
+
+  if(currentLang==="hi"){
+    circle.style.transform="translateX(30px)";
+    circle.innerText="हिं";
+  }else{
+    circle.style.transform="translateX(0)";
+    circle.innerText="EN";
+  }
+
+  applyLanguage();
+}
+
+// 🔄 APPLY
+function applyLanguage(){
+  document.querySelector("h2").innerText = langData[currentLang].title;
+  document.querySelector(".search").placeholder = langData[currentLang].search;
+  document.getElementById("backBtn").innerText = langData[currentLang].back;
+
+  loadLabours();
+}
+
+// 🔥 LOAD DATA
+function loadLabours(){
+  fetch("http://localhost:3000/users")
+  .then(res => res.json())
+  .then(data => {
+
+    let labours = data.filter(user =>
+      user.Role && user.Role.toLowerCase() === "labour"
+    );
+
+    displayLabour(labours);
+  });
+}
+
+// 🎯 DISPLAY
+function displayLabour(data){
+  let container = document.getElementById("labourList");
+  container.innerHTML = "";
+
+  data.forEach(labour => {
+
+    let status = labour.status || "Available";
+
+    if(currentLang==="hi"){
+     status = status==="Available" ? "उपलब्ध" : "व्यस्त";
+    }
+
+    let statusClass = labour.status==="Available" ? "available" : "busy";
+    
+  
+  
+  
+
+    container.innerHTML += `
+<div class="card" onclick='openWorker(${JSON.stringify(labour)})'>
+
+        <h3  onclick="window.location.href='RAGHV.HTML'">${labour.Fullname}</h3>
+        <p>📍 ${labour.Address || langData[currentLang].noLocation}</p>
+        <p>📞 ${labour.Contact}</p>
+        <p>
+  ₹ <span id="price-${labour.id}">
+    ${labour.price || 500}
+  </span>/day
+</p>
+
+
+        <p>
+             <button id="statusbtn" onclick="toggleStatus(this)">
+             Available
+              </button></p>
+
+
+        <button class="map-btn" onclick="openMap('${labour.Address}')">
+          📍 ${langData[currentLang].location}
+        </button>
+
+        <button class="call-btn" onclick="call('${labour.Contact}')">
+          📞 ${langData[currentLang].call}
+        </button>
+
+        <button onclick="deleteUser(${labour.id})"
+        style="margin-top:8px;background:#E44326;color:white;width:100%;padding:10px;border:none;border-radius:15px;">
+          ${langData[currentLang].remove}
+        </button>
+      </div>
+    `;
+  });
+}
+
+// 📍 MAP
+function openMap(Address){
+  if(!Address){
+    alert(langData[currentLang].noLocation);
+    return;
+  }
+
+  document.getElementById("map").innerHTML =
+  `<iframe width="100%" height="400"
+  src="https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed">
+  </iframe>`;
+
+  document.getElementById("mapContainer").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+// 📞 CALL
+function call(number){
+  window.location.href = "tel:"+number;
+}
+
+// ❌ DELETE
+function deleteUser(id){
+  fetch("http://localhost:3000/delete/"+id,{
+    method:"DELETE"
+  })
+  .then(res=>res.text())
+  .then(msg=>{
+    alert(msg);
+    loadLabours();
+  });
+}
+
+function toggleStatus(btn){
+
+  if(btn.innerText==="Available"){
+
+    btn.innerText="Busy";
+    btn.style.background="#ff9f43";
+
+  }else{
+
+    btn.innerText="Available";
+    btn.style.background="#00f5a0";
+
+  }
+
+}
+
+function openWorker(worker){
+  localStorage.setItem("selectedWorker", JSON.stringify(worker));
+  window.location.href = "workerdetails.html";
+}
+
+// 🚀 LOAD
+applyLanguage();
+
+</script>
+
+</body>
+</html>

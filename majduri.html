@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html> 
+
+<html lang="hi"> 
+
+<head> 
+
+  <meta charset="UTF-8"> 
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>मज़दूरी</title> 
+
+ 
+
+  <link rel="stylesheet" href="style.css"> 
+<style>
+
+    *{ 
+
+ margin:0; 
+
+ padding:0; 
+
+ box-sizing:border-box; 
+
+ font-family:'Poppins',sans-serif; 
+
+} 
+
+ 
+
+body{ 
+
+ min-height:100vh; 
+
+ display:flex; 
+
+ justify-content:center; 
+
+ align-items:center; 
+
+ 
+
+ background: radial-gradient(circle at 20% 20%, #00f5a033, transparent), 
+radial-gradient(circle at 80% 30%, #00d9ff33, transparent), 
+
+ radial-gradient(circle at 50% 80%, #00f5a022, transparent), 
+
+ #0f172a; 
+
+ 
+
+ color:white; 
+
+} 
+
+ 
+
+.container{ 
+
+ width:100%; 
+
+ max-width:420px; 
+
+ padding:20px; 
+
+ margin:15px; 
+
+ 
+
+ background:rgba(255,255,255,0.05); 
+
+ backdrop-filter:blur(15px); 
+
+ border-radius:25px; 
+
+} 
+
+ 
+
+/* TOP */ 
+
+.top-bar{ 
+
+ display:flex; 
+
+ justify-content:space-between; 
+
+} 
+
+ 
+
+.role-btn{ 
+
+ padding:10px 15px; 
+
+ border-radius:20px; 
+
+ background:rgba(255,255,255,0.1); 
+
+ transition: 0.2s; 
+
+ margin-bottom:5px; 
+
+} 
+
+ 
+
+.role-btn:hover{ 
+
+box-shadow:0 0 10px #00f5a0; 
+
+} 
+
+.lang-toggle{ 
+
+ width:90px; 
+
+ height:45px; 
+
+ border-radius:30px; 
+
+ padding:5px; 
+ display:flex; 
+
+ align-items:center; 
+
+ position:relative; 
+
+ background:rgba(255,255,255,0.1); 
+
+ cursor:pointer; 
+
+} 
+
+ 
+
+.circle{ 
+
+ width:35px; 
+
+ height:35px; 
+
+ border-radius:50%; 
+
+ background:linear-gradient(45deg,#00f5a0,#00d9ff); 
+
+ display:flex; 
+
+ align-items:center; 
+
+ justify-content:center; 
+
+ color:black; 
+
+ transition:0.3s; 
+
+} 
+
+ 
+
+.lang-text{ 
+
+ position:absolute; 
+
+ right:10px; 
+
+} 
+
+ 
+
+/* STEPS */ 
+
+.steps{ 
+
+ display:flex; 
+
+ justify-content:center; 
+
+ align-items:center; 
+
+ margin:20px 0; 
+
+} 
+
+ 
+
+.step{ 
+
+ width:35px; 
+
+ height:35px; 
+
+ border-radius:50%; 
+
+ background:#00f5a0; 
+
+ color:black; 
+
+ display:flex; 
+
+ align-items:center; 
+
+ justify-content:center; 
+
+} 
+
+ 
+
+.line{ 
+
+ width:40px; 
+
+ height:4px; 
+
+ background:#00f5a0; 
+
+} 
+
+ 
+
+/* TITLE */ 
+
+h2{ 
+
+ text-align:center; 
+
+} 
+
+ 
+
+/* AUDIO */ 
+
+/* 🎧 AUDIO BUTTON */ 
+
+.audio-btn{ 
+
+ display:block; 
+
+ margin:15px auto; 
+
+ 
+
+ background:linear-gradient(45deg,#00f5a0,#00d9ff); 
+
+ color:black; 
+
+ 
+
+ border:none; 
+
+ padding:10px 20px; 
+ border-radius:25px; 
+
+ 
+
+ box-shadow:0 0 15px #00f5a0; 
+
+ transition:0.3s; 
+
+} 
+
+ 
+
+.audio-btn:hover{ 
+
+ transform:scale(1.05); 
+
+ box-shadow:0 0 25px #00d9ff; 
+
+} 
+
+ 
+
+/* ✅ DONE BUTTON */ 
+
+.done-btn{ 
+
+ flex:1; 
+
+ padding:15px; 
+
+ border-radius:25px; 
+
+ 
+
+ background:linear-gradient(45deg,#00f5a0,#00d9ff); 
+
+ color:black; 
+
+ 
+
+ border:none; 
+
+ font-weight:bold; 
+
+ 
+
+ box-shadow:0 0 20px #00f5a0; 
+
+ transition:0.3s; 
+
+} 
+
+ 
+
+.done-btn:hover{ 
+
+ transform:translateY(-3px); 
+
+ box-shadow:0 0 30px #00d9ff; 
+
+} 
+
+ 
+
+/* ⬅ BACK BUTTON */ 
+
+.back-btn{ 
+
+ flex:1; 
+
+ padding:15px; 
+
+ border-radius:25px; 
+
+ 
+
+ background:rgba(255,255,255,0.1); 
+
+ color:white; 
+
+ 
+
+ border:1px solid rgba(255,255,255,0.2); 
+
+ backdrop-filter:blur(10px); 
+
+ 
+
+ transition:0.3s; 
+
+} 
+
+ 
+
+.back-btn:hover{ 
+
+ box-shadow:0 0 10px #00f5a0; 
+
+} 
+
+/* VALUE BOX */ 
+
+.value-box{ 
+
+ background:#64c2cd; 
+
+ color:black; 
+
+ border-radius:25px; 
+
+ text-align:center; 
+
+ padding:30px; 
+ margin:20px 0; 
+
+} 
+
+ 
+
+.value-box h1{ 
+
+ font-size:40px; 
+
+ color:#f5f2f0; 
+
+} 
+
+ 
+
+/* SLIDER */ 
+
+.slider{ 
+
+ width:100%; 
+
+} 
+
+ 
+
+.range-labels{ 
+
+ display:flex; 
+
+ justify-content:space-between; 
+
+ margin:10px 0; 
+
+} 
+
+ 
+
+/* BUTTONS */ 
+
+.btns{ 
+
+ display:flex; 
+
+ gap:10px; 
+
+ margin-bottom:7px; 
+
+ margin-top:20px; 
+
+} 
+
+ 
+
+.back-btn{ 
+
+ flex:1; 
+
+ padding:15px; 
+
+ border-radius:25px; 
+
+} 
+
+ 
+ 
+
+/* MOBILE */ 
+
+@media(max-width:480px){ 
+
+ .container{ 
+
+ border-radius:0; 
+
+ } 
+
+} 
+</style>
+
+</head> 
+
+ 
+
+<body> 
+
+ 
+
+<div class="container"> 
+
+ 
+
+  <!-- TOP --> 
+
+  <div class="top-bar"> 
+
+    <div id="roleText" class="role-btn" onclick="window.location.href='agrohelp.html'">← रोल बदलें</div> 
+
+ 
+
+    <div class="lang-toggle" onclick="toggleLanguage()"> 
+
+      <div id="toggleCircle" class="circle">हिं</div> 
+
+      <span class="lang-text">EN</span> 
+
+    </div> 
+
+  </div> 
+
+ 
+
+  <!-- BACK --> 
+
+  <div class="back">← <span id="backText"  onclick="window.location.href='peoplecount.html'">पीछे</span></div> 
+
+ 
+
+  <!-- STEPS --> 
+
+  <div class="steps"> 
+
+    <div class="step active">✓</div> 
+
+    <div class="line active"></div> 
+
+    <div class="step active">✓</div> 
+
+    <div class="line active"></div> 
+
+    <div class="step active">3</div> 
+
+  </div> 
+
+ 
+
+  <!-- TITLE --> 
+
+  <h2 id="title">मज़दूरी (₹/दिन)</h2> 
+
+ 
+
+  <button id="audioBtn" class="audio-btn">🔊 सुनने के लिए दबाएं</button> 
+
+ 
+
+  <!-- VALUE BOX --> 
+
+  <div class="value-box"> 
+
+    <h1 id="amount">₹500</h1> 
+
+    <p id="perDay">/ दिन</p> 
+
+  </div> 
+
+ 
+
+  <!-- SLIDER --> 
+
+  <input type="range" min="200" max="1500" value="500" class="slider" id="slider"> 
+
+ 
+
+  <div class="range-labels"> 
+
+    <span>₹200</span> 
+
+    <span>₹1500</span> 
+
+  </div> 
+
+ 
+
+  <!-- BUTTONS --> 
+
+  <div class="btns"> 
+
+    <button class="back-btn" id="backBtn"  onclick="window.location.href='peoplecount.html'">← पीछे</button> 
+
+    <button class="done-btn" id="doneBtn" onclick="workdone()">✓ हो गया</button> 
+
+  </div> 
+
+ 
+
+</div> 
+
+ 
+
+ 
+
+</body> 
+<script>
+
+    let currentLang = localStorage.getItem("lang") || "hi"; 
+
+ 
+
+const slider = document.getElementById("slider"); 
+
+const amount = document.getElementById("amount"); 
+
+ 
+
+/* SLIDER CHANGE */ 
+
+slider.oninput = function(){
+  amount.innerText = "₹" + this.value;
+
+  // SAVE WAGE
+  localStorage.setItem("selectedWage", this.value);
+}
+
+ 
+
+/* FINISH */ 
+
+function finish(){ 
+
+  localStorage.setItem("wage", slider.value); 
+
+  alert("Saved! Next Dashboard 😎"); 
+
+} 
+
+ 
+
+/* LANGUAGE */ 
+
+function toggleLanguage(){ 
+
+  currentLang = currentLang === "hi" ? "en" : "hi"; 
+
+  localStorage.setItem("lang", currentLang); 
+
+  applyLanguage(currentLang); 
+
+} 
+
+ 
+
+function applyLanguage(lang){ 
+
+ 
+
+  document.getElementById("title").innerText = 
+
+    lang==="hi"?"मज़दूरी (₹/दिन)":"Wage (₹/day)"; 
+
+ 
+
+  document.getElementById("audioBtn").innerText = 
+
+    lang==="hi"?"🔊 सुनने के लिए दबाएं":"🔊 Tap to listen"; 
+
+ 
+
+  document.getElementById("backText").innerText = 
+
+    lang==="hi"?"पीछे":"Back"; 
+
+ 
+
+  document.getElementById("doneBtn").innerText = 
+
+    lang==="hi"?"✓ हो गया":"✓ Done"; 
+document.getElementById("doneBtn").addEventListener("click", function(){
+    window.location.href="worksuccess.html";
+});
+ 
+
+     document.getElementById("roleText").innerText = 
+
+    lang === "hi" ? "← रोल बदलें" : "← Change Role"; 
+
+    document.getElementById("perDay").innerText = lang === "hi" ?" /दिन" : "/Day"; 
+
+ 
+
+  const circle=document.getElementById("toggleCircle"); 
+
+ 
+
+  if(lang==="en"){ 
+
+    circle.style.transform="translateX(40px)"; 
+
+    circle.innerText="EN"; 
+
+  }else{ 
+
+    circle.style.transform="translateX(0)"; 
+
+    circle.innerText="हिं"; 
+
+  } 
+
+} 
+
+ 
+
+window.onload=()=>{ 
+
+  applyLanguage(currentLang); 
+
+}; 
+
+function  workdone(){
+    window.location.href="jobpost.html";
+}
+
+ 
+</script>
+
+</html> 
+
+
+
+
+
+

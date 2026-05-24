@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Farmer List</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  padding:20px;
+
+  background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              #0f172a;
+
+  color:white;
+}
+
+/* Heading */
+h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+/* Search */
+.search{
+  width:100%;
+  padding:12px;
+  margin-bottom:20px;
+  border:none;
+  border-radius:15px;
+  background:rgba(255,255,255,0.08);
+  color:white;
+}
+
+/* Grid */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+
+/* Card */
+.card{
+  padding:20px;
+  border-radius:20px;
+
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+
+  box-shadow:0 0 20px rgba(0,255,200,0.2);
+}
+
+/* Skills */
+.tag{
+  display:inline-block;
+  padding:5px 10px;
+  margin:5px 5px 5px 0;
+  border-radius:20px;
+  font-size:12px;
+  background:rgba(255,255,255,0.1);
+}
+
+/* Status */
+.available{ color:#00f5a0; }
+.busy{ color:#ff9f43; }
+
+/* Button */
+.call-btn{
+  margin-top:10px;
+  padding:10px;
+  width:100%;
+  border:none;
+  border-radius:15px;
+
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+
+  box-shadow:0 0 10px #00f5a0;
+}
+
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+}
+.call-btn:hover{
+  transform:scale(1.05);
+}
+
+.map-btn{
+  margin-top:10px;
+  background:#00f5a0;
+  border:none;
+  padding:10px;
+  width:100%;
+  border-radius:15px;
+  cursor:pointer;
+  font-weight:bold;
+}
+#mapContainer{
+  margin-top:40px;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.05);
+}
+
+#map{
+  width:400%;
+  height:400px;
+  border-radius:15px;
+}
+
+.lang-toggle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  background:#00f5a0;
+  padding:5px 10px;
+  border-radius:20px;
+  color:black;
+  font-weight:bold;
+}
+
+.circle{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:12px;
+}
+
+.status-select{
+  width:25%;
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  background:#00f5a0;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+  outline:none;
+}
+</style>
+</head>
+<div class="top-bar">
+    <div id="backBtn" class="back-btn" onclick="window.location.href='agrohelp.html'">← पीछे</div>
+
+    <div class="lang-toggle" onclick="toggleLanguage()">
+      <div id="toggleCircle" class="circle">हिं</div>
+      <span class="label">EN</span>
+    </div>
+  </div>
+<body>
+
+<h2>Farmer List</h2>
+
+<input type="text" class="search" placeholder="Search..." onkeyup="searchLabour()">
+
+<div class="grid" id="Farmerlist"  ></div>
+
+<div id="mapContainer">
+  <h3></h3>
+  <div id="map"></div>
+</div>
+
+<script>
+
+
+
+
+
+// ✅ SERVER SE DATA LAO
+function loadLabours(){
+  fetch("http://localhost:3000/users")
+  .then(res => res.json())
+  .then(data => {
+    displayLabour(data);
+  });
+}
+
+
+// ✅ DISPLAY FUNCTION
+function displayLabour(data){
+  let container = document.getElementById("Farmerlist");
+  container.innerHTML = "";
+
+  data.forEach(Farmer => {
+
+    let statusClass = Farmer.status === "Available" ? "available" : "busy";
+
+    let locationText = isHindi ? "📍 स्थान" : "📍 Location";
+    let callText = isHindi ? "📞 कॉल करें" : "📞 Call";
+    let removeText = isHindi ? "हटाएं" : "Remove";
+
+    let availableText = isHindi ? "उपलब्ध" : "Available";
+    let busyText = isHindi ? "व्यस्त" : "Busy";
+
+    let statusText = Farmer.status === "Available" ? availableText : busyText;
+    container.innerHTML += `
+    
+      <div class="card" >
+        
+       <div class="card"
+onclick="openFarmerJobs('${Farmer.Fullname}','${Farmer.Address}')">
+    <p onclick="window.location.href='post.html'">   ${Farmer.Fullname}</p>
+
+        <p  onclick="window.location.href='post.html'">📍 ${Farmer.Address || "No location"}</p>
+
+        <p  onclick="window.location.href='post.html'">📞 ${Farmer.Contact}</p>
+        
+
+        <p>
+  <select class="status-select"
+  onclick="event.stopPropagation()"
+
+    onchange="changeStatus(this, ${Farmer.id})">
+
+    <option value="Work Available"
+      ${Farmer.status === "Work Available" ? "selected" : ""}>
+      Work Available
+    </option>
+
+    <option value="Not Available"
+    
+
+    ${Farmer.status === "Not Available" ? "selected" : ""} >
+      Not Available
+    </option>
+
+  </select>
+</p>
+
+        <button class="map-btn"
+onclick="event.stopPropagation(); openMap(\`${encodeURIComponent(Farmer.Address || '')}\`)">
+  📍 Location
+</button>
+        
+        </button>
+
+        <button class="call-btn" onclick="event.stopPropagation(); call('${Farmer.Contact}')">
+          📞 Call
+        </button>
+
+       <!-- 👇 DELETE BUTTON -->
+       <button onclick="deleteUser(${Farmer.id})" 
+        style="margin-top:8px;background:#E44326;color:white;width:100%;padding:10px;border:none;border-radius:15px;">
+          Remove
+        </button>
+      </div>
+     `;
+  });
+}
+
+
+function openMap(address){
+  if(!address){
+    alert("No location available");
+    return;
+  }
+
+  document.getElementById("map").innerHTML =
+    `<iframe width="100%" height="400"
+    src="https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed">
+    </iframe>`;
+
+  // smooth scroll
+  document.getElementById("mapContainer").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+// ✅ CALL FUNCTION
+function call(number){
+  window.location.href = "tel:" + number;
+}
+
+
+// ✅ DELETE FUNCTION
+function deleteUser(id){
+  fetch("http://localhost:3000/delete/" + id,{
+    method:"DELETE"
+  })
+  .then(res => res.text())
+  .then(msg=>{
+    alert(msg);
+    loadFarmers(); // refresh
+  })
+  .catch(err=>{
+    console.log(err);
+    alert("Delete failed");
+  });
+}
+
+
+// ✅ SEARCH
+
+
+function loadFarmers(){
+  fetch("http://localhost:3000/users")
+  .then(res => res.json())
+  .then(data => {
+
+    // 👇 FILTER ONLY FARMERS
+    
+  let Farmers = data.filter(user => 
+  user.Role && user.Role.toLowerCase() === "farmer"
+
+);
+
+    displayLabour(Farmers);
+  });
+}function searchLabour(){
+  let input = document.querySelector(".search").value.toLowerCase();
+
+  fetch("http://localhost:3000/users")
+  .then(res => res.json())
+  .then(data => {
+
+    // 👇 Only farmers filter
+    let Farmers = data.filter(user => 
+      user.Role && user.Role.toLowerCase() === "farmer"
+    );
+
+    // 👇 Search filter
+    let filtered = Farmers.filter(farmer =>
+      farmer.Fullname.toLowerCase().includes(input) ||
+      (farmer.Address && farmer.Address.toLowerCase().includes(input))
+    );
+
+    displayLabour(filtered);
+  });
+}
+
+let isHindi = false;
+
+function toggleLanguage(){
+  isHindi = !isHindi;
+
+  if(isHindi){
+    document.querySelector("h2").innerText = "किसान सूची";
+    document.querySelector(".search").placeholder = "खोजें...";
+    
+    document.querySelector(".label").innerText = "HI";
+    document.getElementById("toggleCircle").innerText = "EN";
+
+  } else {
+    document.querySelector("h2").innerText = "Farmer List";
+    document.querySelector(".search").placeholder = "Search...";
+    document.querySelector(".label").innerText = "EN";
+    document.getElementById("toggleCircle").innerText = "हिं";
+  }
+}
+
+
+function openFarmerJobs(name,address){
+
+  localStorage.setItem("selectedFarmer", name);
+  localStorage.setItem("selectedAddress", address);
+
+  window.location.href = "post.html";
+}
+// 🔥 PAGE LOAD
+loadFarmers();
+
+
+function changeStatus(select, id){
+
+  let status = select.value;
+
+  // Color change
+  if(status === "Work Available"){
+    select.style.background = "#00f5a0";
+  }else{
+    select.style.background = "#ff4d4d";
+  }
+
+  // Server update
+  fetch("http://localhost:3000/update-status/" + id,{
+    method:"PUT",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body: JSON.stringify({ status: status })
+  })
+  .then(res => res.text())
+  .then(msg => {
+    console.log(msg);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+
+</script>
+
+</body>
+</html>

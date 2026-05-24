@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroHelp</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+    
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              #0f172a;
+
+  color:white;
+}
+
+.container{
+  width:100%;
+  max-width:400px;
+  padding:20px;
+
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+
+  border-radius:25px;
+  box-shadow:0 0 30px rgba(0,255,200,0.2);
+}
+
+/* TOP */
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.role-btn{
+  background:rgba(255,255,255,0.1);
+  color:white;
+  border:none;
+  padding:8px 14px;
+  border-radius:20px;
+}
+
+.lang-toggle{
+  background:rgba(255,255,255,0.1);
+  padding:5px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  cursor:pointer;
+}
+
+.circle{
+  background:#00f5a0;
+  color:black;
+  padding:6px 12px;
+  border-radius:20px;
+  transition:0.3s;
+}
+
+/* USER */
+.user{
+  margin-top:20px;
+}
+
+/* READY CARD */
+.ready-card{
+  margin-top:20px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  padding:20px;
+  border-radius:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 0 20px #00f5a0;
+  cursor:pointer;
+}
+
+.ready-card.not-ready{
+  background:#666;
+  color:white;
+  box-shadow:none;
+}
+
+.toggle-btn{
+  background:white;
+  padding:12px;
+  border-radius:50%;
+}
+
+/* SECTION */
+.section{
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.audio{
+  background:#ffc107;
+  border:none;
+  padding:8px 15px;
+  border-radius:20px;
+}
+
+/* JOB CARD */
+.job-card{
+  margin-top:15px;
+  background:rgba(255,255,255,0.08);
+  border-radius:20px;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.call{
+  background:#00f5a0;
+  border:none;
+  padding:10px;
+  border-radius:50%;
+}
+
+/* BUTTON */
+.bottom-btn{
+  margin-top:20px;
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:25px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  font-weight:bold;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- TOP -->
+  <div class="top-bar">
+    <button class="role-btn" id="roleBtn" onclick="window.location.href='agrohelp.html'">← रोल बदलें</button>
+
+    <div class="lang-toggle" onclick="toggleLang()">
+      <div id="circle" class="circle">हिं</div>
+      <span>EN</span>
+    </div>
+  </div>
+
+  <!-- USER -->
+  <div class="user">
+    <p id="greet">नमस्ते</p>
+    <h2 id="username">👷‍♂️ रमेश</h2>
+  </div>
+
+  <!-- READY CARD -->
+  <div class="ready-card" onclick="toggleReady()">
+    <div>
+      <h3 id="statusTitle">काम के लिए तैयार</h3>
+      <p id="statusSub">बटन दबाकर बदलें</p>
+    </div>
+
+    <div id="readyToggle" class="toggle-btn">✔</div>
+  </div>
+
+  <!-- SECTION -->
+  <div class="section">
+    <h3 id="jobsTitle">पास के काम</h3>
+    <button class="audio" id="listenBtn">🔊 सुनने के लिए दबाएं</button>
+  </div>
+
+  <!-- JOB CARDS -->
+  <div class="job-card">
+    <div class="icon">🚜</div>
+    <div class="info">
+      <h4 class="job">खेत जुताई</h4>
+      <p>₹500 • 0.8 किमी • 👥 2</p>
+    </div>
+    <button class="call" onclick="window.location.href='call.html'">📞</button>
+  </div>
+
+  <div class="job-card">
+    <div class="icon">🌾</div>
+    <div class="info">
+      <h4 class="job">गेहूं कटाई</h4>
+      <p>₹600 • 1.5 किमी • 👥 5</p>
+    </div>
+    <button class="call">📞</button>
+  </div>
+
+  <div class="job-card">
+    <div class="icon">📦</div>
+    <div class="info">
+      <h4 class="job">सब्ज़ी ढुलाई</h4>
+      <p>₹450 • 2 किमी • 👥 3</p>
+    </div>
+    <button class="call">📞</button>
+  </div>
+
+  <!-- BOTTOM BUTTON -->
+  <button class="bottom-btn" onclick="acceptWork()" id="acceptBtn">
+    ✔ हाँ करूंगा
+  </button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+<script>
+    
+let currentLang = "hi";
+
+/* LANGUAGE DATA */
+const text = {
+  hi:{
+    role:"← रोल बदलें",
+    greet:"नमस्ते",
+    name:"👷‍♂️ रमेश",
+    ready:"काम के लिए तैयार",
+    readySub:"बटन दबाकर बदलें",
+    notReady:"अभी नहीं",
+    notReadySub:"बाद में उपलब्ध",
+    jobs:"पास के काम",
+    listen:"🔊 सुनने के लिए दबाएं",
+    accept:"✔ हाँ करूंगा",
+
+    job1:"खेत जुताई",
+    job2:"गेहूं कटाई",
+    job3:"सब्ज़ी ढुलाई"
+  },
+  en:{
+    role:"← Change Role",
+    greet:"Hello",
+    name:"👷‍♂️ Ramesh",
+    ready:"Ready to Work",
+    readySub:"Tap to toggle",
+    notReady:"Not Available",
+    notReadySub:"Available later",
+    jobs:"Nearby Jobs",
+    listen:"🔊 Tap to listen",
+    accept:"✔ I will do",
+
+    job1:"Field Work",
+    job2:"Wheat Cutting",
+    job3:"Vegetable Transport"
+  }
+};
+
+/* APPLY LANGUAGE */
+function applyLanguage(lang){
+
+  document.getElementById("roleBtn").innerText = text[lang].role;
+  document.getElementById("greet").innerText = text[lang].greet;
+  document.getElementById("username").innerText = text[lang].name;
+
+  document.getElementById("jobsTitle").innerText = text[lang].jobs;
+  document.getElementById("listenBtn").innerText = text[lang].listen;
+  document.getElementById("acceptBtn").innerText = text[lang].accept;
+
+  const jobs = document.querySelectorAll(".job");
+  jobs[0].innerText = text[lang].job1;
+  jobs[1].innerText = text[lang].job2;
+  jobs[2].innerText = text[lang].job3;
+
+  updateStatusText();
+
+  const circle = document.getElementById("circle");
+  circle.innerText = lang === "hi" ? "हिं" : "EN";
+  circle.style.transform = lang === "en" ? "translateX(20px)" : "translateX(0)";
+}
+
+/* TOGGLE LANGUAGE */
+function toggleLang(){
+  currentLang = currentLang === "hi" ? "en" : "hi";
+  applyLanguage(currentLang);
+}
+
+/* READY TOGGLE */
+let isReady = true;
+
+function toggleReady(){
+  isReady = !isReady;
+
+  const card = document.querySelector(".ready-card");
+  card.classList.toggle("not-ready");
+
+  updateStatusText();
+}
+
+/* UPDATE READY TEXT */
+function updateStatusText(){
+  const t = text[currentLang];
+
+  document.getElementById("statusTitle").innerText =
+    isReady ? t.ready : t.notReady;
+
+  document.getElementById("statusSub").innerText =
+    isReady ? t.readySub : t.notReadySub;
+
+  document.getElementById("readyToggle").innerText =
+    isReady ? "✔" : "💤";
+}
+
+/* CALL */
+document.querySelectorAll(".call").forEach(btn=>{
+  btn.onclick = ()=> alert("Calling...");
+});
+
+/* ACCEPT */
+function acceptWork(){
+  alert(currentLang === "hi" ? "काम स्वीकार किया 👍" : "Work Accepted 👍");
+}
+
+/* LOAD */
+window.onload = ()=> applyLanguage(currentLang);
+</script>
+</html>
+

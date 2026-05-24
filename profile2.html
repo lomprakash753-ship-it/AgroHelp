@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              #0f172a;
+
+  color:white;
+}
+
+/* CARD */
+.card{
+  width:100%;
+  max-width:400px;
+  padding:25px;
+
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+
+  border-radius:25px;
+  box-shadow:0 0 30px rgba(0,255,200,0.2);
+}
+
+/* TOP */
+.topbar{
+  margin-bottom:20px;
+}
+
+.back-btn{
+  background:rgba(255,255,255,0.08);
+  border:none;
+  padding:8px 12px;
+  border-radius:20px;
+  color:#ccc;
+  cursor:pointer;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.avatar{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  font-size:28px;
+}
+
+.header h1{
+  margin-top:10px;
+}
+
+.header p{
+  font-size:12px;
+  color:#aaa;
+}
+
+/* FIELDS */
+.field{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:12px;
+  margin-top:10px;
+
+  background:rgba(255,255,255,0.08);
+  border-radius:15px;
+}
+
+.field-icon{
+  font-size:18px;
+}
+
+.field-label{
+  font-size:11px;
+  color:#aaa;
+}
+
+.field-value{
+  font-size:14px;
+}
+
+/* ROLE BADGE */
+.role-badge{
+  margin-left:auto;
+  background:#00f5a0;
+  color:black;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:11px;
+}
+
+/* LOGOUT */
+.logout-btn{
+  margin-top:20px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:20px;
+
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.logout-btn:hover{
+  transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- BACK -->
+  <div class="topbar">
+    <button class="back-btn" onclick="history.back()">← Back</button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="avatar">👤</div>
+    <h1>User Profile</h1>
+    <p>Personal Information</p>
+  </div>
+
+  <!-- FIELDS -->
+  <div class="field">
+    <div class="field-icon">👤</div>
+    <div>
+      <div class="field-label">Name</div>
+      <div class="field-value">Bansal</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">📋</div>
+    <div>
+      <div class="field-label">Surname</div>
+      <div class="field-value">College</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">📍</div>
+    <div>
+      <div class="field-label">Address</div>
+      <div class="field-value">Mandideep</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">🎂</div>
+    <div>
+      <div class="field-label">Age</div>
+      <div class="field-value">24</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">⚧</div>
+    <div>
+      <div class="field-label">Gender</div>
+      <div class="field-value">Male</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">📞</div>
+    <div>
+      <div class="field-label">Contact</div>
+      <div class="field-value">0088220055</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">🏷️</div>
+    <div>
+      <div class="field-label">Pincode</div>
+      <div class="field-value">464770</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field-icon">🛡️</div>
+    <div>
+      <div class="field-label">Role</div>
+      <div class="field-value">Not Assigned</div>
+    </div>
+    <div class="role-badge">Pending</div>
+  </div>
+
+  <!-- LOGOUT -->
+  <button class="logout-btn">Logout</button>
+
+</div>
+
+</body>
+</html>

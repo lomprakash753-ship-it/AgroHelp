@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farmer Payment</title>
+
+    <!-- Razorpay Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        body{
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f2fff2;
+        }
+
+        button{
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🌾 KisanDirect Payment</h1>
+
+    <h2>Pay ₹500</h2>
+
+    <button id="payBtn">Pay Now</button>
+
+    <script>
+
+        document.getElementById("payBtn").onclick = function(){
+
+            var options = {
+                "key": "rzp_test_YourKeyHere", // Razorpay Key
+                "amount": "50000", // ₹500 = 50000 paise
+                "currency": "INR",
+                "name": "KisanDirect",
+                "description": "Vegetable Order Payment",
+
+                "image": "https://cdn-icons-png.flaticon.com/512/2909/2909763.png",
+
+                "handler": function (response){
+                    alert("Payment Successful!\nPayment ID: " + response.razorpay_payment_id);
+                },
+
+                "prefill": {
+                    "name": "Customer Name",
+                    "email": "customer@gmail.com",
+                    "contact": "9999999999"
+                },
+
+                "theme": {
+                    "color": "#008000"
+                }
+            };
+
+            var rzp1 = new Razorpay(options);
+
+            rzp1.open();
+        }
+
+    </script>
+
+</body>
+</html>

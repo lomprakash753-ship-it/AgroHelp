@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              #0f172a;
+
+  color:white;
+}
+
+.container{
+  width:100%;
+  max-width:370px;
+  padding:25px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+  border-radius:25px;
+  box-shadow:0 0 30px rgba(0,255,200,0.2);
+}
+
+h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+input, select{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:15px;
+  background:rgba(23, 21, 21, 0.544);
+  color:rgb(249, 238, 238);
+  outline:none;
+}
+
+input::placeholder{
+  color:#ccc;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:black;
+  font-weight:bold;
+  box-shadow:0 0 15px #00f5a0;
+  cursor:pointer;
+}
+
+button:hover{
+  transform:scale(1.03);
+}
+
+/* 👇 Inline login text style */
+.login-line{
+  text-align:center;
+  margin-top:15px;
+  color:#ccc;
+}
+
+.login-link{
+  color:#00f5a0;
+  cursor:pointer;
+  margin-left:5px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.login-link:hover{
+  text-decoration:underline;
+}
+
+#gender {
+  color: #ccc;
+}
+
+#Role {
+  color: #ccc;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+
+<h2>Create Account</h2>
+
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="sirname" placeholder="Sirname">
+<input type="text" id="address" placeholder="Address">
+<input type="number" id="age" placeholder="Age">
+
+<select id="gender">
+  <option value="">Select Gender</option>
+  <option>Male</option>
+  <option>Female</option>
+</select>
+
+<input type="text" id="contact" placeholder="Contact Number">
+<input type="text" id="pincode" placeholder="Pincode">
+
+<select id="Role">
+  <option value="">Role </option>
+  <option>Farmer</option>
+  <option>Labour</option>
+  <option>Customer</option>
+</select>
+<input type="password" id="password" placeholder="Password">
+<input type="password" id="confirm_password" placeholder="Confirm Password">
+<input type="text" id="state" placeholder="State">
+<input type="text" id="districk" placeholder="districk">
+<input type="text" id="sub_districk" placeholder="sub_districk">
+
+
+<button onclick="signup()">Submit</button>
+
+<!-- 👇 Inline login text -->
+<p class="login-line">
+  Already have an account?
+  <span class="login-link" onclick="window.location.href='newsignup.html'">Login</span>
+</p>
+
+</div>
+
+<script>
+function signup(){
+
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirm_password").value;
+
+  const data = {
+    name: document.getElementById("name").value,
+    sirname: document.getElementById("sirname").value,
+    address: document.getElementById("address").value,
+    age: document.getElementById("age").value,
+    gender: document.getElementById("gender").value,
+    contact: document.getElementById("contact").value,
+    pincode: document.getElementById("pincode").value,
+    Role: document.getElementById("Role").value,
+    password: document.getElementById("password").value,
+    state: document.getElementById("state").value,
+    districk: document.getElementById("districk").value,
+    sub_districk: document.getElementById("sub_districk").value
+  };
+
+  if(!data.name || !data.contact){
+    alert("Please fill required fields");
+    return;
+  }
+
+  if(password !== confirmPassword){
+    alert("Password Mismatch ❌");
+    return;
+  }
+
+  if(password.length < 6){
+    alert("Password must be at least 6 characters");
+    return;
+  }
+
+  fetch("http://localhost:3000/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(msg => {
+alert(msg);
+    // 🔥 MOST IMPORTANT LINE
+    localStorage.setItem("user", JSON.stringify(data));
+
+    alert("Signup Successful ✅");
+    window.location.href = "agrohelp.html";
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Signup Error ❌");
+  });
+}
+
+// 👇 Login redirect
+function goToLogin(){
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

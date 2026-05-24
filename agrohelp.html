@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroHelp</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+    
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+body{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:100vh;
+  padding:20px 0;
+
+   background: radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+              radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+              radial-gradient(circle at 50% 80%, #00f5a022, transparent),
+              #0f172a;
+  color:rgb(30, 27, 27);
+}
+
+/* CONTAINER */
+.container{
+  width:90%;
+  max-width:420px;
+  padding:20px;
+  border-radius:25px;
+
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+
+  box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* TOP */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.call-btn{
+  background:#ff7a00;
+  padding:14px 8px;
+  border-radius:20px;
+  border:none;
+  color:white;
+  font-weight:600;
+}
+
+/* TOGGLE */
+.toggle{
+  width:70px;
+  height:35px;
+  border-radius:30px;
+  padding:4px;
+  display:flex;
+  align-items:center;
+
+  background:rgba(237, 219, 219, 0.1);
+  cursor:pointer;
+}
+
+.circle{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:black;
+  font-size:12px;
+  font-weight:bold;
+
+  transition:0.3s;
+}
+
+/* LOGO */
+.logo{
+  text-align:center;
+  margin:20px 0;
+}
+.img{
+  height:100px;
+  border-radius: 50px;
+  width:100px;
+}
+
+.logo p{
+  opacity:0.7;
+}
+
+/* TEXT */
+h1{ font-size:24px; }
+h2{ font-size:20px; text-align:center; margin:10px 0; }
+h3{ font-size:16px; }
+
+/* AUDIO */
+.audio{
+  margin:10px auto;
+  display:block;
+
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  border:none;
+  padding:10px 20px;
+  border-radius:25px;
+  color:black;
+  font-weight:600;
+}
+
+/* CARDS */
+.card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  flex-wrap:wrap;
+  gap:10px;
+
+  padding:15px;
+  margin-top:12px;
+
+  border-radius:20px;
+
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+
+  border:1px solid rgba(255,255,255,0.1);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 20px #00f5a0;
+}
+
+.left{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.icon{
+  width: 100px;
+  height:100px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+
+/* MOBILE */
+@media(max-width:480px){
+
+  .container{
+    width:95%;
+    padding:15px;
+  }
+
+  .icon{
+    width:40px;
+    height:40px;
+    font-size:18px;
+  }
+
+.call-btn{
+  background: linear-gradient(45deg,#ff7a00,#ff3c00);
+  padding:14px 10px;
+  border-radius:25px;
+  border:none;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(255,122,0,0.6);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+  100%{transform:scale(1);}
+}
+}
+
+.icon2{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:22px;
+}
+
+
+.float-call{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:green;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:24px;
+  box-shadow:0 0 20px green;
+}
+.audio{
+  width:100%;
+  margin-top:15px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  border:none;
+  padding:14px;
+  border-radius:30px;
+  font-size:16px;
+  font-weight:bold;
+  color:black;
+  cursor:pointer;
+
+  box-shadow:0 0 20px #00f5a0;
+
+  animation:glow 2s infinite;
+}
+
+@keyframes glow{
+
+  0%{
+    box-shadow:0 0 10px #00f5a0;
+  }
+
+  50%{
+    box-shadow:0 0 30px #00d9ff;
+  }
+
+  100%{
+    box-shadow:0 0 10px #00f5a0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- TOP -->
+
+   <div class="icon2" onclick="goProfile()">🧑‍🔧</div>
+  <div class="top">
+    <button id="callBtn" class="call-btn" >📞 Free Call Help</button>
+
+    <div class="toggle" onclick="toggleLang()">
+      <div id="circle" class="circle">EN</div>
+    </div>
+  </div>
+
+  <button onclick="startAssistant()" class="audio">
+🎤 AI Voice Assistant
+</button>
+  <!-- LOGO -->
+  <div class="logo">
+   <img src="https://play-lh.googleusercontent.com/xlCJWa4PJM_qp-uJu9n2NhnJL8-7n4IQcFPE_y38iZmC2xr_gX8SBICoSrBQbue6xj32YS9IFYpvsgAWjvzX=w240-h480-rw" class="img"/>
+    <h1 id="title">AgroHelp</h1>
+    <p id="tagline">Village's Own App</p>
+  </div>
+    
+  <!-- QUESTION -->
+  <h2 id="question">Who are you?</h2>
+<!---
+  <button id="audioBtn" class="audio">🔊 Tap to listen</button>
+-->
+  <!-- CARDS -->
+  <div class="card">
+    <div class="left">
+      <div class="icon"  onclick="window.location.href='profile.htnl'">👨‍🌾</div>
+      <div>
+        <h3 id="farmer" onclick="wwindow.location.href='farmerlist.html'">Farmer</h3>
+        <p id="farmerSub" onclick="window.location.href='farmerlist.html'">Farmer</p>
+      </div>
+    </div>
+    🚜
+  </div>
+
+  <div class="card">
+    <div class="left">
+      <div class="icon">👷</div>
+      <div>
+        <h3 id="labour"  onclick="window.location.href='labourlist.html'">Labour</h3>
+        <p id="labourSub" onclick="window.location.href='labourlist.html'">Labour</p>
+      </div>
+    </div>
+    🪖
+  </div>
+
+  <div class="card">
+    <div class="left">
+      <div class="icon">🛒</div>
+      <div>
+        <h3 id="customer" onclick="window.location.href='shoppage.html'">Consumer</h3>
+        <p id="customerSub" onclick="window.location.href='shoppage.html'">Cunsumer</p>
+      </div>
+    </div>
+    🛍️
+  </div>
+
+
+  <div class="card">
+    <div class="left">
+      <div class="icon">💼</div>
+      <div>
+        <h3 id="labour"  onclick="window.location.href='jobpost.html'">Jobs</h3>
+        <p id="labourSub" onclick="window.location.href='jobpost.html'">Jobs</p>
+      </div>
+
+    </div>
+    💼
+  </div>
+  
+  <div class="card">
+    <div class="left">
+      <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
+  <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
+</svg></div>
+      <div>
+        <h3 id="labour"  onclick="window.location.href='marketprice.html'">Market Price</h3>
+        <p id="labourSub" onclick="window.location.href='marketprice.html'">Market Price</p>
+      </div>
+
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
+  <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
+</svg>
+  </div>
+
+
+
+
+</div>
+
+<div id="callPopup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0008;justify-content:center;align-items:center;">
+
+  <div style="background:white;color:black;padding:20px;border-radius:20px;width:280px;text-align:center;">
+
+    <h2>📞 Free Call Help</h2>
+    <p>Connect with nearby farmers/labour instantly</p>
+
+    <button onclick="makeCall()" style="background:#22c55e;color:white;padding:10px;width:100%;margin-top:10px;border:none;border-radius:10px;">
+      Call Now
+    </button>
+
+    <button onclick="closePopup()" style="background:#ef4444;color:white;padding:10px;width:100%;margin-top:10px;border:none;border-radius:10px;">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+</body>
+
+<script>
+
+    
+
+let currentLang = localStorage.getItem("lang") || "en";
+
+const text = {
+  en:{
+    call:"📞 Free Call Help",
+    title:"AgroHelp",
+    tagline:"Village's Own App",
+    question:"Who are you?",
+    audio:"🔊 Tap to listen",
+    farmer:"Farmer",
+    labour:"Labour",
+    customer:"Customer"
+  },
+  hi:{
+    call:"📞 मुफ्त कॉल मदद",
+    title:"एग्रोहेल्प",
+    tagline:"गांव का अपना ऐप",
+    question:"आप कौन हैं?",
+    audio:"🔊 सुनने के लिए दबाएं",
+    farmer:"किसान",
+    labour:"मज़दूर",
+    customer:"ग्राहक"
+  }
+};
+
+function applyLang(lang){
+
+  document.getElementById("callBtn").innerText = text[lang].call;
+  document.getElementById("title").innerText = text[lang].title;
+  document.getElementById("tagline").innerText = text[lang].tagline;
+  document.getElementById("question").innerText = text[lang].question;
+  document.getElementById("audioBtn").innerText = text[lang].audio;
+
+  document.getElementById("farmer").innerText = text[lang].farmer;
+  document.getElementById("farmerSub").innerText = text[lang].farmer;
+
+  document.getElementById("labour").innerText = text[lang].labour;
+  document.getElementById("labourSub").innerText = text[lang].labour;
+
+  document.getElementById("customer").innerText = text[lang].customer;
+  document.getElementById("customerSub").innerText = text[lang].customer;
+
+  const circle = document.getElementById("circle");
+
+  if(lang === "hi"){
+    circle.style.transform = "translateX(35px)";
+    circle.innerText = "हिं";
+  }else{
+    circle.style.transform = "translateX(0)";
+    circle.innerText = "EN";
+  }
+}
+
+function toggleLang(){
+  currentLang = currentLang === "en" ? "hi" : "en";
+  localStorage.setItem("lang", currentLang);
+  applyLang(currentLang);
+}
+
+window.onload = () => applyLang(currentLang);
+
+//const user=localStarage.getItem("user");
+//if (!user) {
+ // window.location.href="login.html";
+//}
+
+function goProfile(){
+  window.location.href = "profile.html";
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  document.getElementById("callBtn").addEventListener("click", function(){
+    document.getElementById("callPopup").style.display = "flex";
+  });
+
+});
+
+function makeCall(){
+  window.location.href = "tel:+919999999999";
+}
+
+function closePopup(){
+
+  document.getElementById("callPopup").style.display = "none";
+}
+
+// SPEAK FUNCTION
+function speak(text){
+
+  const speech = new SpeechSynthesisUtterance();
+
+  speech.text = text;
+
+  speech.lang = currentLang === "hi" ? "hi-IN" : "en-US";
+
+  speech.rate = 1;
+
+  speech.pitch = 1;
+
+  speech.volume = 1;
+
+  window.speechSynthesis.speak(speech);
+}
+
+
+// START VOICE ASSISTANT
+function startAssistant(){
+
+  speak("Hello, how can I help you");
+
+  const recognition = new webkitSpeechRecognition();
+
+  recognition.lang = currentLang === "hi" ? "hi-IN" : "en-US";
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
+
+  recognition.start();
+
+  recognition.onresult = function(event){
+
+    const command = event.results[0][0].transcript.toLowerCase();
+
+    console.log(command);
+
+    
+    // FARMER
+    if(command.includes("farmer") || command.includes("किसान")){
+
+      speak("Opening farmer section");
+
+      window.location.href = "farmerlist.html";
+    }
+
+    
+    // LABOUR
+    else if(command.includes("labour") || command.includes("मज़दूर")){
+
+      speak("Opening labour section");
+
+      window.location.href = "labourlist.html";
+    }
+
+    
+    // MARKET
+    else if(command.includes("market") || command.includes("मंडी")){
+
+      speak("Opening market prices");
+
+      window.location.href = "marketprice.html";
+    }
+
+    
+    // JOBS
+    else if(command.includes("job") || command.includes("नौकरी")){
+
+      speak("Opening jobs");
+
+      window.location.href = "jobpost.html";
+    }
+
+    
+    // SHOP
+    else if(command.includes("shop") || command.includes("customer")){
+
+      speak("Opening shopping page");
+
+      window.location.href = "shoppage.html";
+    }
+
+    
+    // PROFILE
+    else if(command.includes("profile")){
+
+      speak("Opening your profile");
+
+      window.location.href = "profile.html";
+    }
+
+    
+    // UNKNOWN
+    else{
+
+      speak("Sorry, I did not understand");
+    }
+
+  };
+
+
+  recognition.onerror = function(){
+
+    speak("Voice recognition failed");
+  };
+
+}
+</script>
+</html>

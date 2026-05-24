@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Auth UI</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+    
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:
+  radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+  radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+  #0f172a;
+  padding:20px;
+}
+
+.container{
+  position:relative;
+  width:900px;
+  height:auto;
+  max-width:100%;
+  min-height:800px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 0 30px rgba(0,255,200,0.2);
+}
+
+/* FORMS */
+
+.form{
+  position:absolute;
+  top:0;
+  width:50%;
+  height:100%;
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  transition:0.6s ease;
+  z-index:5;
+  overflow-y:auto;
+}
+
+.form h2{
+  color:white;
+  margin-bottom:20px;
+}
+.form input,
+.form select{
+  margin:8px 0;
+  padding:12px;
+  border:none;
+  outline:none;
+  border-radius:10px;
+  background:white;
+  color:rgb(43, 35, 35);
+}
+
+.form button{
+  margin-top:15px;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:
+  0 0 10px #00f5a0,
+  0 0 20px #00d9ff;
+}
+
+.forgot{
+  color:white;
+  margin-top:5px;
+}
+
+/* LOGIN */
+
+.login{
+  left:0;
+}
+
+/* REGISTER */
+
+.register{
+  right:0;
+  opacity:0;
+  transform:translateX(100%);
+}
+
+/* OVERLAY */
+
+.overlay{
+  position:absolute;
+  top:0;
+  right:0;
+  width:50%;
+  height:100%;
+  background:
+  radial-gradient(circle at 20% 20%, #00f5a033, transparent),
+  radial-gradient(circle at 80% 30%, #00d9ff33, transparent),
+  #0f172a;
+
+  border-radius:150px 0 0 150px;
+  transition:0.6s ease-in-out;
+  z-index:2;
+}
+
+.overlay-content{
+  width:200%;
+  height:100%;
+  display:flex;
+  transition:0.6s;
+}
+
+.panel{
+  width:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  gap:15px;
+}
+
+.image{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+}
+
+.heading{
+  font-size:32px;
+  background:linear-gradient(90deg,#00f5a0,#00d9ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color:transparent;
+  font-weight:bold;
+}
+
+.panel button{
+  padding:10px 25px;
+  border-radius:30px;
+  border:2px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
+
+/* TOGGLE */
+
+.lang-toggle{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:55px;
+  height:28px;
+  background:linear-gradient(45deg,#00f5a0,#00d9ff);
+  border-radius:50px;
+  padding:4px;
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+  z-index:10;
+}
+
+.circle{
+  width:20px;
+  height:20px;
+  background:white;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:10px;
+  transition:0.3s;
+}
+
+.lang-toggle.active .circle{
+  transform:translateX(25px);
+}
+
+/* ACTIVE */
+
+.container.active .overlay{
+  transform:translateX(-100%);
+  border-radius:0 150px 150px 0;
+}
+
+.container.active .overlay-content{
+  transform:translateX(-50%);
+}
+
+.container.active .login{
+  transform:translateX(-100%);
+  opacity:0;
+}
+
+.container.active .register{
+  transform:translateX(0);
+  opacity:1;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+  body{
+    padding:10px;
+    align-items:flex-start; /* important */
+  }
+
+  .container{
+    width:100%;
+    min-height:520px;
+    height:520px;
+  }
+
+  /* KEEP SIDE BY SIDE */
+  .form{
+    width:50%;
+    height:100%;
+    padding:20px;
+  }
+
+  .overlay{
+    width:50%;
+    height:100%;
+    border-radius:100px 0 0 100px;
+  }
+
+  .overlay-content{
+    width:200%;
+  }
+
+  .panel{
+    width:50%;
+    padding:15px;
+  }
+
+  /* FONT SMALL */
+  .form h2{
+    font-size:18px;
+  }
+
+  .heading{
+    font-size:18px;
+  }
+
+  .panel h2{
+    font-size:16px;
+  }
+
+  .panel p{
+    font-size:13px;
+  }
+
+  .form input,
+  .form select{
+    padding:8px;
+    font-size:12px;
+  }
+
+  .form button{
+    padding:10px;
+    font-size:13px;
+  }
+
+  .image{
+    width:70px;
+    height:70px;
+  }
+
+  /* toggle adjust */
+  .lang-toggle{
+    width:45px;
+    height:22px;
+  }
+
+  .circle{
+    width:18px;
+    height:18px;
+    font-size:9px;
+  }
+
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="container">
+
+  <!-- Login -->
+  <div class="form login">
+    <h2 id="login1">Login</h2>
+    <input type="text" id="loginUsername"  placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <a href="#" class="forgot" id="forgot1">Forgot Password?</a>
+
+    <!--  FIX: id added -->
+    <button class="loginBtn" id="loginBtn"  onclick="login()">Login</button>
+  </div>
+
+  <!-- Register -->
+  <div class="form register">
+    <h2 id="regHeading">Registration</h2>
+
+    <input type="text" id="Fullname" placeholder="Full Name">
+    <input type="number" id="Contact" placeholder="Contact Number">
+
+    <select id="Role">
+      <option>select role</option>
+      <option>Farmer</option>
+      <option>Customer</option>
+      <option>Labour</option>
+    </select>
+
+    <input type="number" id="Age" placeholder="Age">
+
+    <select id="Gender">
+      <option>Select Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+<select id="State">
+  <option value="">Select State</option>
+
+  <option value="Madhya Pradesh">Madhya Pradesh</option>
+  <option value="Maharashtra">Maharashtra</option>
+  <option value="Uttar Pradesh">Uttar Pradesh</option>
+  <option value="Rajasthan">Rajasthan</option>
+  <option value="Gujarat">Gujarat</option>
+  <option value="Punjab">Punjab</option>
+  <option value="Bihar">Bihar</option>
+  <option value="Delhi">Delhi</option>
+  <option value="Haryana">Haryana</option>
+  <option value="Karnataka">Karnataka</option>
+  <option value="Tamil Nadu">Tamil Nadu</option>
+  <option value="Kerala">Kerala</option>
+  <option value="West Bengal">West Bengal</option>
+
+</select>
+    
+<select id="District">
+
+
+  <option value="">Select District</option>
+
+  <option value="Madhya Pradesh">Raisen</option>
+  <option value="Maharashtra">Bhopal</option>
+  <option value="Uttar Pradesh">Indore</option>
+  <option value="Rajasthan">Gwalior</option>
+  <option value="Gujarat">Ujjain</option>
+  <option value="Punjab">satna</option>
+  <option value="Bihar">Katni</option>
+  <option value="Delhi">mandla</option>
+  <option value="Haryana">Panna</option>
+  <option value="Karnataka">Sehore</option>
+  <option value="Tamil Nadu"> Khargone</option>
+  <option value="Kerala">Rewa</option>
+  <option value="West Bengal"> Betul</option>
+
+</select>
+    
+    
+
+    <input type="text" id="Sub_District" placeholder="Sub-District">
+    <input type="text" id="Address" placeholder="Address">
+    <input type="text" id="Pincode" placeholder="Pincode">
+    <input type="password" id="create_password" placeholder="create_password">
+    <input type="passeord" id="confrom_password" placeholder="Confrom_password">
+
+    <button id="registerBtn" onclick="signup()">Register</button>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay">
+
+    <!-- Toggle -->
+    <div class="lang-toggle" onclick="toggleLang()">
+      <div id="circle" class="circle">हिं</div>
+    </div>
+
+    <div class="overlay-content">
+
+      <!-- LEFT -->
+      <div class="panel left">
+        <img src="https://play-lh.googleusercontent.com/xlCJWa4PJM_qp-uJu9n2NhnJL8-7n4IQcFPE_y38iZmC2xr_gX8SBICoSrBQbue6xj32YS9IFYpvsgAWjvzX=w240-h480-rw" class="image">
+
+        <h2 class="heading" id="agro1">AgroHelp</h2>
+        <h2 id="hello">Hello, Welcome!</h2>
+        <p id="noAccount">Don't have an account?</p>
+
+        <!--  FIX: correct id -->
+        <button id="registerBtnOverlay"  >Register</button>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="panel right-panel">
+        <img src="https://play-lh.googleusercontent.com/xlCJWa4PJM_qp-uJu9n2NhnJL8-7n4IQcFPE_y38iZmC2xr_gX8SBICoSrBQbue6xj32YS9IFYpvsgAWjvzX=w240-h480-rw" class="image">
+
+        <h2 class="heading" id="agro2">AgroHelp</h2>
+        <h2 id="welcomeBack">Welcome Back!</h2>
+        <p id="haveAccount">Already have an account?</p>
+
+        <!--  FIX: correct id -->
+        <button class="loginBtn" id="loginBtnOverlay">Login</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+</body>
+
+<script>
+
+    
+const container = document.getElementById("container");
+
+/* SLIDER */
+document.getElementById("registerBtnOverlay").onclick = () => {
+  container.classList.add("active");
+};
+
+document.getElementById("loginBtnOverlay").onclick = () => {
+  container.classList.remove("active");
+};
+
+
+/* LANGUAGE DATA */
+const langData = {
+  en:{
+    login1: "Login",
+    forgot1: "Forgot Password?",
+    loginBtn: "Login",
+    agro1: "AgroHelp",
+    agro2: "AgroHelp",
+    hello: "Hello, Welcome!",
+    noAccount: "Don't have an account?",
+    registerBtn: "Register",
+    regHeading: "Registration",
+    welcomeBack: "Welcome Back!",
+    haveAccount: "Already have an account?"
+  },
+  hi:{
+    login1: "लॉगिन",
+    forgot1: "पासवर्ड भूल गए?",
+    loginBtn: "लॉगिन",
+    agro1: "एग्रोहेल्प",
+    agro2: "एग्रोहेल्प",
+    hello: "नमस्ते, स्वागत है!",
+    noAccount: "क्या आपका अकाउंट नहीं है?",
+    registerBtn: "रजिस्टर",
+    regHeading: "पंजीकरण",
+    welcomeBack: "वापसी पर स्वागत है!",
+    haveAccount: "क्या आपके पास अकाउंट है?"
+  }
+};
+
+
+/* LANGUAGE CHANGE */
+function changeLanguage(lang){
+
+  document.getElementById("login1").innerText = langData[lang].login1;
+  document.getElementById("forgot1").innerText = langData[lang].forgot1;
+
+  //  BOTH LOGIN BUTTONS
+  document.getElementById("loginBtn").innerText = langData[lang].loginBtn;
+  document.getElementById("loginBtnOverlay").innerText = langData[lang].loginBtn;
+
+  // TEXT
+  document.getElementById("agro1").innerText = langData[lang].agro1;
+  document.getElementById("agro2").innerText = langData[lang].agro2;
+
+  document.getElementById("hello").innerText = langData[lang].hello;
+  document.getElementById("noAccount").innerText = langData[lang].noAccount;
+
+  document.getElementById("regHeading").innerText = langData[lang].regHeading;
+  document.getElementById("welcomeBack").innerText = langData[lang].welcomeBack;
+  document.getElementById("haveAccount").innerText = langData[lang].haveAccount;
+
+  //  BOTH REGISTER BUTTONS
+  document.getElementById("registerBtn").innerText = langData[lang].registerBtn;
+  document.getElementById("registerBtnOverlay").innerText = langData[lang].registerBtn;
+}
+
+
+/* TOGGLE */
+let isEnglish = false;
+
+function toggleLang(){
+  isEnglish = !isEnglish;
+
+  const toggle = document.querySelector(".lang-toggle");
+  const circle = document.getElementById("circle");
+
+  toggle.classList.toggle("active");
+
+  let lang = isEnglish ? "en" : "hi";
+
+  circle.innerText = isEnglish ? "EN" : "हिं";
+
+  changeLanguage(lang);
+
+  localStorage.setItem("lang", lang);
+}
+
+
+/* LOAD */
+window.onload = () => {
+  const savedLang = localStorage.getItem("lang") || "hi";
+
+  changeLanguage(savedLang);
+
+  if (savedLang === "en") {
+    document.querySelector(".lang-toggle").classList.add("active");
+    document.getElementById("circle").innerText = "EN";
+    isEnglish = true;
+  }
+};
+function signup(){
+
+  const data = {
+
+    Fullname: document.getElementById("Fullname").value,
+    Role: document.getElementById("Role").value,
+    Age: document.getElementById("Age").value,
+    Gender: document.getElementById("Gender").value,
+    State: document.getElementById("State").value,
+    District: document.getElementById("District").value,
+    Sub_District: document.getElementById("Sub_District").value,
+    Address: document.getElementById("Address").value,
+    Pincode: document.getElementById("Pincode").value,
+    Contact: document.getElementById("Contact").value,
+    create_password: document.getElementById("create_password").value
+
+   // Contact: "9999999999", // temporary
+   // Password: "123456"     // temporary
+  };
+
+  if(!data.Fullname){
+    alert("Please fill required fields");
+    return;
+  }
+
+
+ /* if(password !== confromPassword){
+    alert("Password Mismatch ❌");
+    return;
+  }
+
+  if(password.length < 6){
+    alert("Password must be at least 6 characters");
+    return;
+  }
+    */
+  fetch("http://localhost:3000/Register", {
+
+    method: "POST",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body: JSON.stringify(data)
+
+  })
+
+  .then(res => res.text())
+
+  .then(msg => {
+
+    alert(msg);
+
+      //if(msg.includes("Successful")){
+
+    localStorage.setItem("users", JSON.stringify(data));
+
+    window.location.href = "phonenumber.html";
+   //   }
+  })
+
+  .catch(err => {
+
+    console.log(err);
+
+    alert("Signup Error ❌");
+
+  });
+
+}
+
+function login(){
+
+  const username =
+  document.getElementById("loginUsername").value;
+
+  const password =
+  document.getElementById("loginPassword").value;
+
+  // localStorage se user nikalo
+  const savedUser =
+  JSON.parse(localStorage.getItem("users"));
+
+  if(!savedUser){
+    alert("No account found ❌");
+    return;
+  }
+
+  // login check
+  if(
+    username === savedUser.Fullname &&
+    password === savedUser.create_password
+  ){
+
+    alert("Login Successful ✅");
+
+    // 🔥 Contact number save karo
+    localStorage.setItem(
+      "Contact",
+      savedUser.Contact
+    );
+
+    // next page
+    window.location.href =
+    "phonenumber.html";
+
+  } else {
+
+    alert("Wrong Username or Password ❌");
+
+  }
+}
+
+
+</script>
+</html>
+
+ 
